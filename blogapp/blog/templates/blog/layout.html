@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        Blog App
+      {% endblock %}
+    </title>
+    <link href="{% static 'blog/css/output.css' %}" rel="stylesheet" />
+  </head>
+  <body class="flex flex-col bg-teal-800 ">
+    <nav class="flex flex-row justify-center items-center bg-red-900 text-white text-[20px] w-full p-2">
+      <ul class="flex flex-row w-full justify-between items-center">
+        <li>
+          <a href="{% url 'blog:blog_list' %}">Home</a>
+        </li>
+        <li>
+          <a href="{% if user.is_authenticated %}
+              {% url 'blog:blog_create' %}
+            {% else %}
+              {% url 'login' %}
+              ?next=
+              {% url 'blog:blog_create' %}
+            {% endif %}">
+            Create Blog
+          </a>
+        </li>
+        {% if user.is_authenticated %}
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit">Logout</button>
+            </form>
+          </li>
+        {% else %}
+          <li>
+            <form method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+              <button type="submit">Login</button>
+            </form>
+          </li>
+          <li>
+            <form method="post" action="{% url 'signup' %}">
+              {% csrf_token %}
+              <button type="submit">SignUp</button>
+            </form>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <div class="content w-full flex flex-col justify-center items-center">
+      {% block content %}
+
+      {% endblock %}
+    </div>
+
+    <footer class="flex justify-center items-center w-full">
+      <div class="flex flex-row w-full justify-center items-center text-white bg-black opacity-80">
+        <p>&copy; {{ year }} Blog App. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

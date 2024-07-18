@@ -1,0 +1,15 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'blog/css/output.css' %}" />
+    <title>Logged Out</title>
+  </head>
+  <body class="flex flex-col justify-center items-center h-screen bg-teal-800 text-white">
+    <h1 class="text-2xl mb-3">~You have been Logged out~</h1>
+    <a href="{% url 'login' %}" class="text-[24px] font-medium p-2 rounded-md bg-teal-950 shadow-lg shadow-gray-900 hover:shadow-lg hover:shadow-teal-500 hover:text-teal-500">Login again</a>
+  </body>
+</html>

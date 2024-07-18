@@ -1,0 +1,14 @@
+{% extends 'blog/layout.html' %}
+
+{% block title %}
+  Create Blog
+{% endblock %}
+
+{% block content %}
+  <h1>Create Blog Post</h1>
+  <form method="post" enctype="multipart/form-data" action="{% url 'blog:blog_create' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create</button>
+  </form>
+{% endblock %}
