@@ -12,45 +12,49 @@
     </title>
     <link href="{% static 'blog/css/output.css' %}" rel="stylesheet" />
   </head>
-  <body class="flex flex-col bg-teal-800 ">
-    <nav class="flex flex-row justify-center items-center bg-red-900 text-white text-[20px] w-full p-2">
-      <ul class="flex flex-row w-full justify-between items-center">
-        <li>
-          <a href="{% url 'blog:blog_list' %}">Home</a>
-        </li>
-        <li>
-          <a href="{% if user.is_authenticated %}
-              {% url 'blog:blog_create' %}
+  <body class="flex flex-col bg-gradient-to-b from-teal-600 to-teal-800 bg-no-repeat bg-fixed h-screen">
+    <nav class="bg-red-950 shadow-lg shadow-teal-950 border-black border-b-[2px] border-opacity-30">
+      <div class="w-full flex flex-wrap items-center justify-between p-4">
+        <a href="{% url 'blog:blog_list' %}"><img src="{% static 'blog/images/logo.svg' %}" class="h-10" alt="Blog App Logo" /></a>
+        <a href="{% url 'blog:blog_list' %}"><p class="text-white font-semibold text-[1.75rem] font-serif">Blog App</p></a>
+        <div class="flex items-center space-x-3">
+          <button type="button" class="flex text-sm bg-gray-800 rounded-full" id="user-menu-button">
+            <span class="sr-only">Open user menu</span>
+            <img class="w-8 h-8 rounded-full" src="{% static 'blog/images/user_icon.png' %}" alt="user photo" />
+          </button>
+          <div class="absolute top-7 right-1 mt-10 w-48 z-50 hidden text-base list-none divide-y rounded-lg shadow bg-teal-950 divide-teal-600" id="user-dropdown">
+            {% if user.is_authenticated %}
+              <div class="px-4 py-3">
+                <span class="block text-sm text-white">{{ user.username }}</span>
+                <span class="block text-sm truncate text-gray-400">{{ user.email }}</span>
+              </div>
+              <ul class="py-2">
+                <li>
+                  <a href="#" class="block px-4 py-2 text-sm hover:bg-teal-900 text-gray-200 hover:text-white">Account</a>
+                </li>
+                <li>
+                  <a href="#" class="block px-4 py-2 text-sm hover:bg-teal-900 text-gray-200 hover:text-white">Manage Blogs</a>
+                </li>
+                <li>
+                  <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full text-left block px-4 py-2 text-sm hover:bg-teal-900 text-gray-200 hover:text-white">Logout</button>
+                  </form>
+                </li>
+              </ul>
             {% else %}
-              {% url 'login' %}
-              ?next=
-              {% url 'blog:blog_create' %}
-            {% endif %}">
-            Create Blog
-          </a>
-        </li>
-        {% if user.is_authenticated %}
-          <li>
-            <form method="post" action="{% url 'logout' %}">
-              {% csrf_token %}
-              <button type="submit">Logout</button>
-            </form>
-          </li>
-        {% else %}
-          <li>
-            <form method="post" action="{% url 'login' %}">
-              {% csrf_token %}
-              <button type="submit">Login</button>
-            </form>
-          </li>
-          <li>
-            <form method="post" action="{% url 'signup' %}">
-              {% csrf_token %}
-              <button type="submit">SignUp</button>
-            </form>
-          </li>
-        {% endif %}
-      </ul>
+              <ul class="py-2">
+                <li>
+                  <a href="{% url 'login' %}" class="block px-4 py-2 text-sm hover:bg-teal-900 text-gray-200 hover:text-white">Login</a>
+                </li>
+                <li>
+                  <a href="{% url 'signup' %}" class="block px-4 py-2 text-sm hover:bg-teal-900 text-gray-200 hover:text-white">Sign up</a>
+                </li>
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </nav>
 
     <div class="content w-full flex flex-col justify-center items-center">
@@ -60,9 +64,30 @@
     </div>
 
     <footer class="flex justify-center items-center w-full">
-      <div class="flex flex-row w-full justify-center items-center text-white bg-black opacity-80">
+      <div class="flex flex-row w-full justify-center items-center text-white bg-black bg-opacity-90 font-mono">
         <p>&copy; {{ year }} Blog App. All rights reserved.</p>
       </div>
     </footer>
   </body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var button = document.getElementById('user-menu-button')
+      var dropdown = document.getElementById('user-dropdown')
+    
+      button.addEventListener('click', function (event) {
+        dropdown.classList.toggle('hidden')
+        event.stopPropagation()
+      })
+    
+      document.addEventListener('click', function (event) {
+        var isClickInsideDropdown = dropdown.contains(event.target)
+        var isClickInsideButton = button.contains(event.target)
+    
+        if (!isClickInsideDropdown && !isClickInsideButton) {
+          dropdown.classList.add('hidden')
+        }
+      })
+    })
+  </script>
 </html>
