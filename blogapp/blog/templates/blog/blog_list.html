@@ -43,7 +43,11 @@
       {% for blog in blogs %}
         <a href="{% url 'blog:blog_detail' blog.id blog.title %}">
           <div class="w-[300px] max-h-[400px] h-[390px] bg-white rounded-lg shadow-teal-600 shadow-lg hover:shadow-xl hover:shadow-teal-500">
-            <img class="rounded-t-lg w-full h-[175px] object-cover" src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" />
+            {% if blog.thumbnail %}
+                <img class="rounded-t-lg w-full h-[175px] object-cover" src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" />
+            {% else %}
+                <p class="rounded-t-lg w-full h-[175px] object-cover bg-gray-400 text-center flex flex-col justify-center font-medium">No image available</p>
+            {% endif %}
             <div class="p-5 flex flex-col justify-around items-start">
               <h5 class="text-2xl font-bold tracking-tight text-gray-900 font-serif">{{ blog.title }}</h5>
               <p class="text-sm text-gray-600">

@@ -12,7 +12,7 @@
     </title>
     <link href="{% static 'blog/css/output.css' %}" rel="stylesheet" />
   </head>
-  <body class="flex flex-col bg-gradient-to-b from-teal-600 to-teal-800 bg-no-repeat bg-fixed h-screen">
+  <body class="flex flex-col bg-gradient-to-b from-teal-600 to-teal-800 bg-no-repeat bg-fixed h-screen justify-between">
     <nav class="bg-red-950 shadow-lg shadow-teal-950 border-black border-b-[2px] border-opacity-30">
       <div class="w-full flex flex-wrap items-center justify-between p-4">
         <a href="{% url 'blog:blog_list' %}"><img src="{% static 'blog/images/logo.svg' %}" class="h-10" alt="Blog App Logo" /></a>
