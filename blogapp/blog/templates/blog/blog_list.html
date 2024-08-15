@@ -12,9 +12,7 @@
       <form action="{% if user.is_authenticated %}
           {% url 'blog:blog_create' %}
         {% else %}
-          {% url 'login' %}
-          ?next=
-          {% url 'blog:blog_create' %}
+          {% url 'login' %}?next={% url 'blog:blog_create' %}
         {% endif %}"
         method="post">
         {% csrf_token %}
@@ -43,7 +41,7 @@
 
     <div class="flex flex-row justify-evenly items-center flex-wrap gap-x-4 gap-y-10 p-4 pb-8 w-full">
       {% for blog in blogs %}
-        <a href="#">
+        <a href="{% url 'blog:blog_detail' blog.id blog.title %}">
           <div class="w-[300px] max-h-[400px] h-[390px] bg-white rounded-lg shadow-teal-600 shadow-lg hover:shadow-xl hover:shadow-teal-500">
             <img class="rounded-t-lg w-full h-[175px] object-cover" src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" />
             <div class="p-5 flex flex-col justify-around items-start">

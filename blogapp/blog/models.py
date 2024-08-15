@@ -30,3 +30,4 @@ class Blog(models.Model):
     
     
 
+  

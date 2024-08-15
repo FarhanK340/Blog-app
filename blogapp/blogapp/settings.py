@@ -18,7 +18,7 @@ ALLOWED_HOSTS = ["testserver", "*"]
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [BASE_DIR / "static",
-                    BASE_DIR / 'blogapp/blog/static',
+                    # BASE_DIR / 'blogapp/blog/static/blog',
                     ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
