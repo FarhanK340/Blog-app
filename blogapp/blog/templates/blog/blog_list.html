@@ -1,24 +1,68 @@
-{% extends "blog/layout.html" %}
+{% extends 'blog/layout.html' %}
 
-{% block title%}Blog List{% endblock %}
+{% block title %}
+  Blog List
+{% endblock %}
 
 {% block content %}
-  <h1 class="font-serif font-bold text-[3rem]">Blog List</h1>
+  <div class="flex flex-col justify-evenly items-center h-[55vh] text-white">
+    <h1 class="text-[2.5rem] font-serif font-bold text-center w-5/6">Your Daily Dose of Inspiration and Insight</h1>
+    <p class="font-serif italic -mt-8">~ Unleash your creativity, one word at a time ~</p>
+    <div class="flex flex-row space-x-4">
+      <form action="{% if user.is_authenticated %}
+          {% url 'blog:blog_create' %}
+        {% else %}
+          {% url 'login' %}?next={% url 'blog:blog_create' %}
+        {% endif %}"
+        method="post">
+        {% csrf_token %}
+        <button class="p-3 bg-teal-950 text-[1rem] rounded-lg shadow-md shadow-teal-600 hover:shadow-lg hover:shadow-teal-500 hover:opacity-85 font-semibold">Create Blogs</button>
+      </form>
+      {% if user.is_authenticated %}
+        <button class="p-3 bg-teal-950 text-[1rem] rounded-lg shadow-md shadow-teal-600 hover:shadow-lg hover:shadow-teal-500 hover:opacity-85 font-semibold">Manage Blogs</button>
+      {% endif %}
+    </div>
+  </div>
 
+  <div class="flex flex-col justify-center items-center w-11/12 rounded-t-2xl bg-teal-950 shadow-lg shadow-black">
+    <h1 class="font-serif font-bold text-[2.5rem] text-white pt-3">Blog List</h1>
 
-  <ul class="flex flex-col justify-center items-center w-2/6 flex-wrap ">
-    {% for blog in blogs %}
-    <li class="bg-white rounded-lg shadow-xl shadow-teal-950 overflow-hidden mb-6 w-full">
-      <div class="p-4">
-          <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ blog.title }}</h2>
-          <img class="w-full h-48 object-cover mb-4 rounded-lg" src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" />
-          <p class="text-sm text-gray-600">Author: <span class="font-semibold">{{ blog.author.username }}</span></p>
-          <p class="text-sm text-gray-600">Created At: <span class="font-semibold">{{ blog.created_at }}</span></p>
-          <p class="text-sm text-gray-600">Modified At: <span class="font-semibold">{{ blog.modified_at }}</span></p>
-          <p class="text-gray-700 mt-4">{{ blog.content|truncatewords:30 }}</p>
+    <form class="w-3/5 my-2">
+      <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+          </svg>
+        </div>
+        <input type="search" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 placeholder-gray-400 text-[1rem] focus:outline-none" placeholder="Search Blogs" required />
+        <button type="submit" class="text-white absolute end-[4.5px] bottom-[4.5px] bg-teal-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 hover:bg-teal-700">Search</button>
       </div>
-  </li>
-  
-    {% endfor %}
-  </ul>
+    </form>
+
+    <div class="flex flex-row justify-evenly items-center flex-wrap gap-x-4 gap-y-10 p-4 pb-8 w-full">
+      {% for blog in blogs %}
+        <a href="{% url 'blog:blog_detail' blog.id blog.title %}">
+          <div class="w-[300px] max-h-[400px] h-[390px] bg-white rounded-lg shadow-teal-600 shadow-lg hover:shadow-xl hover:shadow-teal-500">
+            <img class="rounded-t-lg w-full h-[175px] object-cover" src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" />
+            <div class="p-5 flex flex-col justify-around items-start">
+              <h5 class="text-2xl font-bold tracking-tight text-gray-900 font-serif">{{ blog.title }}</h5>
+              <p class="text-sm text-gray-600">
+                Author: <span class="font-semibold">{{ blog.author.username }}</span>
+              </p>
+              <p class="text-sm text-gray-600">
+                Created At: <span class="font-semibold">{{ blog.created_at }}</span>
+              </p>
+              <p class="mt-1 w-full h-[1px] bg-gray-600 mb-2"></p>
+              <p class="mb-3 font-normal text-gray-700 text-wrap ">{{ blog.content|truncatechars:70 }}</p>
+              <div class=" inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:outline-none focus:teal-300">
+                Read more<svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}

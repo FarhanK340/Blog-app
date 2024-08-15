@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from blog import views
+from blog.views import BlogView
 
 
 urlpatterns = [
@@ -14,7 +14,7 @@ urlpatterns = [
         template_name='blog/registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(
         next_page='login'), name='logout'),
-    path('accounts/signup/', views.signup, name='signup'),
+    path('accounts/signup/', BlogView.as_view(), name='signup'),
 
 ]
 
