@@ -1,14 +1,31 @@
-{% extends 'blog/layout.html' %}
+{% load static %}
+{% load form_tags %}
 
-{% block title %}
-  Create Blog
-{% endblock %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'blog/css/output.css' %}" />
+    <title>Create Blog</title>
+  </head>
+  <body class="flex flex-col justify-center items-center w-full bg-teal-800 font-serif">
+    <div class="flex flex-col justify-center items-center bg-teal-950 my-8 p-8 rounded-xl shadow-lg shadow-black w-1/2">
+      <h1 class="text-[2rem] font-semibold mb-2 text-white">Create Blog Post</h1>
+      <form method="post" enctype="multipart/form-data" action="{% url 'blog:blog_create' %}" class="space-y-2 w-full">
+        {% csrf_token %}
 
-{% block content %}
-  <h1>Create Blog Post</h1>
-  <form method="post" enctype="multipart/form-data" action="{% url 'blog:blog_create' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create</button>
-  </form>
-{% endblock %}
+        <label for="id_title" class="flex font-serif text-[20px] font-medium w-full text-white">Title</label>
+        {{ form.title|add_attributes:'class:flex w-full p-2 border border-gray-300 rounded-md border-none outline-none, placeholder:Enter the title' }}
+
+        <label for="id_content" class="flex font-serif text-[20px] font-medium w-full text-white">Content</label>
+        {{ form.content|add_attributes:'class:flex w-full p-2 border border-gray-300 rounded-md border-none outline-none, placeholder:Enter the content' }}
+
+        <label for="id_thumbnail" class="flex font-serif text-[20px] font-medium w-full text-white">Thumbnail</label>
+        {{ form.thumbnail|add_attributes:'class:flex w-full border border-gray-300 bg-gray-100 rounded-md border-none outline-none' }}
+
+        <button type="submit" class="w-full bg-teal-800 text-white shadow-lg shadow-black font-bold p-2 rounded-md hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-500">Create</button>
+      </form>
+      <a href="{% url 'blog:blog_list' %}" class="block mt-4 text-teal-500 hover:text-teal-300">Back to Blog List</a>
+    </div>
+  </body>
+</html>
